@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { StorageService } from '../../services/storage.service';
 import { FreezerItem } from '../../models/freezer-item.model';
+import { addIcons } from 'ionicons';
+import { checkmarkOutline, cameraOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-add-item',
@@ -30,7 +32,12 @@ export class AddItemPage implements OnInit {
     private storageService: StorageService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    addIcons({
+      'checkmark-outline': checkmarkOutline,
+      'camera-outline': cameraOutline
+    });
+  }
 
   async ngOnInit() {
     const itemId = this.route.snapshot.paramMap.get('id');

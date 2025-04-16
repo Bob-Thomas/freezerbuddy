@@ -1,1 +1,191 @@
- 
+:host {
+  --page-padding: 20px;
+  --card-border-radius: 20px;
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --accent-color: #3D8AFF;
+  --accent-light: rgba(61, 138, 255, 0.15);
+}
+
+ion-content {
+  --background: var(--background-color);
+}
+
+ion-header {
+  background: transparent;
+  
+  ion-toolbar {
+    --background: transparent;
+    --border-style: none;
+    padding-top: 8px;
+    
+    ion-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    ion-back-button {
+      --color: var(--text-color);
+    }
+
+    ion-button {
+      --color: var(--accent-color);
+    }
+  }
+}
+
+.photo-section {
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  
+  .photo-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-secondary);
+      
+      ion-icon {
+        font-size: 48px;
+        margin-bottom: 8px;
+      }
+      
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.form-section {
+  ion-list {
+    background: transparent;
+    padding: 0;
+    
+    ion-item {
+      --background: rgba(255, 255, 255, 0.08);
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --padding-top: 16px;
+      --padding-bottom: 16px;
+      --border-radius: var(--card-border-radius);
+      margin-bottom: 12px;
+      border-radius: var(--card-border-radius);
+      
+      ion-label {
+        --color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+      
+      ion-input, ion-datetime, ion-datetime-button {
+        --color: var(--text-color);
+        --placeholder-color: var(--text-secondary);
+        font-size: 16px;
+      }
+
+      ion-datetime-button::part(native) {
+        background: transparent;
+        color: var(--text-color);
+        padding-left: 0;
+      }
+
+      ion-toggle {
+        --background: rgba(255, 255, 255, 0.15);
+        --background-checked: var(--accent-color);
+        --handle-background: var(--text-color);
+        --handle-background-checked: var(--text-color);
+      }
+    }
+  }
+}
+
+ion-modal {
+  --width: 90%;
+  --height: auto;
+  --background: var(--background-color);
+  
+  &::part(content) {
+    background: var(--background-color) !important;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  &::part(backdrop) {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  ion-datetime {
+    background: black;;
+    border-radius: 20px;
+    padding: 10px;
+
+    &::part(native) {
+      background: var(--background-color);
+    }
+
+    &::part(calendar-day) {
+      color: var(--text-color);
+    }
+
+    &::part(calendar-day-active) {
+      background: var(--accent-color);
+      color: var(--text-color);
+    }
+
+    &::part(calendar-day-today) {
+      border-color: var(--accent-color);
+    }
+
+    &::part(calendar-header) {
+      background: var(--background-color);
+    }
+
+    &::part(wheel-item) {
+      color: var(--text-color);
+    }
+
+    &::part(calendar-month-year) {
+      color: var(--text-color);
+    }
+
+    &::part(calendar-week-day) {
+      color: var(--text-secondary);
+    }
+
+    &::part(calendar-body) {
+      background: var(--background-color);
+    }
+
+    &::part(calendar-month) {
+      background: var(--background-color);
+    }
+
+    &::part(wheel-item-active) {
+      color: var(--accent-color);
+    }
+
+    &::part(time-button) {
+      background: var(--background-color);
+      color: var(--text-color);
+    }
+  }
+} 

@@ -1,59 +1,95 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inventory"></ion-back-button>
+      <ion-back-button defaultHref="/inventory" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>{{ item.id ? 'Edit Item' : 'Add Item' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="saveItem()" [disabled]="!item.description || !item.photoUrl">
-        Save
+      <ion-button (click)="saveItem()" [disabled]="!item.description">
+        <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <form (ngSubmit)="saveItem()">
-    <ion-list>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <img [src]="item.photoUrl" *ngIf="item.photoUrl" alt="Item photo">
-          <ion-icon name="camera" *ngIf="!item.photoUrl"></ion-icon>
-        </ion-thumbnail>
-        <ion-button fill="clear" (click)="takePhoto()">
-          {{ item.photoUrl ? 'Change Photo' : 'Take Photo' }}
-        </ion-button>
-      </ion-item>
+    <div class="photo-section">
+      <div class="photo-container" (click)="takePhoto()">
+        <img [src]="item.photoUrl" *ngIf="item.photoUrl" alt="Item photo">
+        <div class="photo-placeholder" *ngIf="!item.photoUrl">
+          <ion-icon name="camera-outline"></ion-icon>
+          <span>Add Photo</span>
+        </div>
+      </div>
+    </div>
 
-      <ion-item>
-        <ion-label position="stacked">Description</ion-label>
-        <ion-input [(ngModel)]="item.description" name="description" required></ion-input>
-      </ion-item>
+    <div class="form-section">
+      <ion-list>
+        <ion-item lines="none">
+          <ion-label position="stacked">Description</ion-label>
+          <ion-input [(ngModel)]="item.description" 
+                     name="description" 
+                     required
+                     placeholder="What are you freezing?"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Storage Date</ion-label>
-        <ion-datetime [(ngModel)]="item.storageDate" name="storageDate" required></ion-datetime>
-      </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Storage Date</ion-label>
+          <ion-datetime-button datetime="storageDate"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+                id="storageDate"
+                [(ngModel)]="item.storageDate" 
+                name="storageDate" 
+                presentation="date"
+                required></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Expiry Date</ion-label>
-        <ion-datetime [(ngModel)]="item.expiryDate" name="expiryDate" required></ion-datetime>
-      </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Expiry Date</ion-label>
+          <ion-datetime-button datetime="expiryDate"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+                id="expiryDate"
+                [(ngModel)]="item.expiryDate" 
+                name="expiryDate" 
+                presentation="date"
+                required></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Defrost Time</ion-label>
-        <ion-input [(ngModel)]="item.defrostTime" name="defrostTime" placeholder="e.g., 4 hours countertop"></ion-input>
-      </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Defrost Time</ion-label>
+          <ion-input [(ngModel)]="item.defrostTime" 
+                     name="defrostTime" 
+                     placeholder="e.g., 4 hours countertop"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Planned Consumption Date</ion-label>
-        <ion-datetime [(ngModel)]="item.plannedConsumptionDate" name="plannedConsumptionDate"></ion-datetime>
-      </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Planned Consumption</ion-label>
+          <ion-datetime-button datetime="plannedDate"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+                id="plannedDate"
+                [(ngModel)]="item.plannedConsumptionDate" 
+                name="plannedConsumptionDate"
+                presentation="date"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
 
-      <ion-item *ngIf="item.plannedConsumptionDate">
-        <ion-label>Set Reminder</ion-label>
-        <ion-toggle [(ngModel)]="item.reminderEnabled" name="reminderEnabled"></ion-toggle>
-      </ion-item>
-    </ion-list>
+        <ion-item lines="none" *ngIf="item.plannedConsumptionDate">
+          <ion-label>Reminder</ion-label>
+          <ion-toggle [(ngModel)]="item.reminderEnabled" name="reminderEnabled"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
   </form>
 </ion-content> 
