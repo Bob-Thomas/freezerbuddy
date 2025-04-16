@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { FreezerService } from './services/freezer.service';
 import { IndexedDBService } from './services/indexeddb.service';
 import { NotificationService } from './services/notification.service';
+import { CalendarService } from './services/calendar.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideIonicAngular(),
     { provide: FreezerService, useClass: FreezerService },
     { provide: IndexedDBService, useClass: IndexedDBService },
-    { provide: NotificationService, useClass: NotificationService }
+    { provide: NotificationService, useClass: NotificationService },
+    { provide: CalendarService, useClass: CalendarService }
   ]
 }; 

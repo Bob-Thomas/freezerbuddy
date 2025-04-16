@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { InventoryPage } from './pages/inventory/inventory.page';
 import { AddItemPage } from './pages/add-item/add-item.page';
 import { ItemDetailsPage } from './pages/item-details/item-details.page';
+import { SettingsPage } from './pages/settings/settings.page';
 
 export const routes: Routes = [
   {
@@ -24,5 +25,9 @@ export const routes: Routes = [
   {
     path: 'item-details/:id',
     component: ItemDetailsPage
+  },
+  {
+    path: 'settings',
+    component: SettingsPage
   }
 ];

@@ -204,4 +204,67 @@ ion-modal {
   ion-select {
     min-width: 100px;
   }
+}
+
+:host ::ng-deep .calendar-confirmation-modal {
+  --width: 90%;
+  --height: auto;
+  --background: var(--background-color);
+
+  ion-content {
+    --background: var(--background-color);
+  }
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    color: var(--text-color);
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 24px;
+
+      ion-icon {
+        font-size: 48px;
+        color: var(--ion-color-primary);
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0;
+        color: var(--text-color);
+      }
+    }
+
+    .modal-body {
+      width: 100%;
+      margin-bottom: 24px;
+      text-align: left;
+
+      p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--text-color);
+      }
+    }
+
+    .modal-footer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      ion-button {
+        margin: 0;
+      }
+
+      ion-button[fill="clear"] {
+        --color: var(--text-color);
+      }
+    }
+  }
 } 

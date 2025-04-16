@@ -9,7 +9,12 @@ import { IndexedDBService } from './services/indexeddb.service';
 import { NotificationService } from './services/notification.service';
 
 @NgModule({
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule
+  ],
+  declarations: [],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FreezerService,

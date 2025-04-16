@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add to Calendar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="modal-content">
+    <div class="modal-header">
+      <ion-icon name="calendar-outline" size="large"></ion-icon>
+    </div>
+
+    <div class="modal-body">
+      <div class="calendar-options">
+        <div class="calendar-option" *ngIf="item.plannedConsumptionDate">
+          <div class="option-text">
+            <h3>Defrost Reminder</h3>
+            <p>{{ item.description }} on {{ item.plannedConsumptionDate | date:'mediumDate' }}</p>
+          </div>
+          <ion-button 
+            (click)="addDefrostEvent()" 
+            [color]="defrostAdded ? 'success' : 'primary'"
+            fill="solid">
+            {{ defrostAdded ? 'Added ✓' : 'Add' }}
+          </ion-button>
+        </div>
+
+        <div class="calendar-option">
+          <div class="option-text">
+            <h3>Expiry Reminder</h3>
+            <p>{{ item.description }} on {{ item.expiryDate | date:'mediumDate' }}</p>
+          </div>
+          <ion-button 
+            (click)="addExpiryEvent()" 
+            [color]="expiryAdded ? 'success' : 'primary'"
+            fill="solid">
+            {{ expiryAdded ? 'Added ✓' : 'Add' }}
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <ion-button expand="block" (click)="done()" color="primary" class="ion-margin-bottom">
+        Done
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="cancel()">
+        Cancel
+      </ion-button>
+    </div>
+  </div>
+</ion-content> 

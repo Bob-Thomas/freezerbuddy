@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { FreezerItem } from '../models/freezer-item.model';
 
+interface PendingNotification {
+  id: number;
+  title: string;
+  body: string;
+  schedule: { at: Date };
+  type: 'defrost' | 'expiry';
+  itemId: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -146,6 +155,23 @@ export class NotificationService {
     }
     if (item.isPlannedForConsumption && item.reminderSettings.defrostEnabled) {
       await this.scheduleDefrostReminder(item);
+    }
+  }
+
+  async getPendingNotifications(): Promise<PendingNotification[]> {
+    try {
+      const pending = await LocalNotifications.getPending();
+      return pending.notifications.map(notification => ({
+        id: notification.id,
+        title: notification.title || '',
+        body: notification.body || '',
+        schedule: { at: new Date(notification.schedule?.at || Date.now()) },
+        type: notification.extra?.type || 'expiry',
+        itemId: notification.extra?.itemId || ''
+      }));
+    } catch (error) {
+      console.error('Error getting pending notifications:', error);
+      return [];
     }
   }
 } 

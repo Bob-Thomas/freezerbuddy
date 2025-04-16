@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IndexedDBService } from '../../services/indexed-db.service';
 import { CameraService } from '../../services/camera.service';
 import { NotificationService } from '../../services/notification.service';
+import { CalendarService } from '../../services/calendar.service';
+import { CalendarModalComponent } from '../../components/calendar-modal/calendar-modal.component';
 import { FreezerItem } from '../../models/freezer-item.model';
 import { addIcons } from 'ionicons';
-import { checkmarkOutline, cameraOutline, imagesOutline } from 'ionicons/icons';
+import { checkmarkOutline, cameraOutline, imagesOutline, calendarOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-add-item',
@@ -42,13 +44,16 @@ export class AddItemPage implements OnInit {
     private indexedDBService: IndexedDBService,
     private cameraService: CameraService,
     private notificationService: NotificationService,
+    private calendarService: CalendarService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalController: ModalController
   ) {
     addIcons({
       'checkmark-outline': checkmarkOutline,
       'camera-outline': cameraOutline,
-      'images-outline': imagesOutline
+      'images-outline': imagesOutline,
+      'calendar-outline': calendarOutline
     });
   }
 
@@ -116,6 +121,26 @@ export class AddItemPage implements OnInit {
       await this.notificationService.updateReminders(this.item);
     }
     
+    // Show calendar modal
+    const modal = await this.modalController.create({
+      component: CalendarModalComponent,
+      componentProps: {
+        item: this.item
+      },
+      cssClass: 'calendar-modal'
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    
+    if (data) {
+      const { defrostAdded, expiryAdded } = data;
+      if (defrostAdded || expiryAdded) {
+        console.log('Calendar events added:', { defrostAdded, expiryAdded });
+      }
+    }
+
     this.router.navigate(['/inventory']);
   }
 

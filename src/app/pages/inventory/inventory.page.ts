@@ -7,7 +7,7 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { FreezerItem } from '../../models/freezer-item.model';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { add, optionsOutline } from 'ionicons/icons';
+import { add, imageOutline, optionsOutline } from 'ionicons/icons';
 import { IndexedDBService } from '../../services/indexed-db.service';
 
 type SortOption = 'expiry' | 'added' | 'name';
@@ -33,7 +33,7 @@ export class InventoryPage {
     private router: Router,
     private indexedDBService: IndexedDBService
   ) {
-    addIcons({ add, optionsOutline });
+    addIcons({ add, optionsOutline, imageOutline });
   }
 
   ionViewWillEnter() {
