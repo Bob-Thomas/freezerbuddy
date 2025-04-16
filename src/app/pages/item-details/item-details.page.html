@@ -1,71 +1,89 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inventory"></ion-back-button>
+      <ion-back-button defaultHref="/inventory" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>Item Details</ion-title>
     <ion-buttons slot="end">
       <ion-button [routerLink]="['/add-item', item?.id]">
-        <ion-icon slot="icon-only" name="create"></ion-icon>
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="item">
-  <ion-card>
-    <img [src]="item.photoUrl" alt="Item photo">
-    <ion-card-header>
-      <ion-card-title>{{ item.description }}</ion-card-title>
-    </ion-card-header>
+<ion-content class="ion-padding" *ngIf="item">
+  <div class="item-container">
+    <!-- Photo Section -->
+    <div class="photo-section" *ngIf="item.photoData">
+      <img [src]="item.photoData" alt="Item photo">
+    </div>
 
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          <ion-label>Storage Date</ion-label>
-          <ion-text>{{ item.storageDate | date }}</ion-text>
-        </ion-item>
+    <!-- Details Section -->
+    <div class="details-section">
+      <h1 class="item-title">{{ item.description }}</h1>
 
-        <ion-item>
-          <ion-label>Expiry Date</ion-label>
-          <ion-text>{{ item.expiryDate | date }}</ion-text>
-        </ion-item>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Storage Date</span>
+          <span class="value">{{ item.storageDate | date }}</span>
+        </div>
 
-        <ion-item>
-          <ion-label>Days Remaining</ion-label>
-          <ion-text [color]="getDaysRemaining() < 7 ? 'danger' : 'success'">
+        <div class="info-item">
+          <span class="label">Expiry Date</span>
+          <span class="value">{{ item.expiryDate | date }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Days Remaining</span>
+          <span class="value" [class.danger]="getDaysRemaining() < 7" [class.success]="getDaysRemaining() >= 7">
             {{ getDaysRemaining() }} days
-          </ion-text>
-        </ion-item>
+          </span>
+        </div>
 
-        <ion-item *ngIf="item.defrostTime">
-          <ion-label>Defrost Time</ion-label>
-          <ion-text>{{ item.defrostTime }}</ion-text>
-        </ion-item>
+        <div class="info-item" *ngIf="item.defrostTime">
+          <span class="label">Defrost Time</span>
+          <span class="value">{{ getFormattedDefrostTime() }}</span>
+          <span class="reminder-time" *ngIf="getDefrostReminderTime()">
+            Start defrosting at: {{ getDefrostReminderTime() | date:'medium' }}
+          </span>
+        </div>
 
-        <ion-item *ngIf="item.plannedConsumptionDate">
-          <ion-label>Planned Consumption</ion-label>
-          <ion-text>{{ item.plannedConsumptionDate | date }}</ion-text>
-        </ion-item>
+        <div class="info-item" *ngIf="item.plannedConsumptionDate">
+          <span class="label">Planned Consumption</span>
+          <span class="value">{{ item.plannedConsumptionDate | date }}</span>
+        </div>
 
-        <ion-item *ngIf="getDaysUntilPlanned() !== null">
-          <ion-label>Days Until Planned</ion-label>
-          <ion-text [color]="getDaysUntilPlanned()! < 3 ? 'warning' : 'success'">
+        <div class="info-item" *ngIf="getDaysUntilPlanned() !== null">
+          <span class="label">Days Until Planned</span>
+          <span class="value" [class.warning]="getDaysUntilPlanned()! < 3" [class.success]="getDaysUntilPlanned()! >= 3">
             {{ getDaysUntilPlanned() }} days
-          </ion-text>
-        </ion-item>
+          </span>
+        </div>
 
-        <ion-item *ngIf="item.reminderEnabled">
-          <ion-label>Reminder Set</ion-label>
-          <ion-icon name="notifications" color="primary"></ion-icon>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+        <div class="info-item reminder">
+          <span class="label">Defrost Reminder</span>
+          <span class="value" [style.color]="item.reminderSettings.defrostEnabled ? '#2dd36f' : '#92949c'">
+            <ion-icon name="notifications-outline" [color]="item.reminderSettings.defrostEnabled ? 'success' : 'medium'"></ion-icon>
+            {{item.reminderSettings.defrostEnabled ? 'Enabled' : 'Disabled'}}
+          </span>
+        </div>
+        <div class="info-item reminder">
+          <span class="label">Expiry Reminder</span>
+          <span class="value" [style.color]="item.reminderSettings.expiryEnabled ? '#2dd36f' : '#92949c'">
+            <ion-icon name="notifications-outline" [color]="item.reminderSettings.expiryEnabled ? 'success' : 'medium'"></ion-icon>
+            {{item.reminderSettings.expiryEnabled ? 'Enabled' : 'Disabled'}}
+          </span>
+        </div>
+      </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="removeItem()">
-      <ion-icon name="trash"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+      <!-- Delete Button -->
+      <div class="action-buttons">
+        <ion-button (click)="deleteItem()" fill="clear" color="danger" class="delete-button">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete Item
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content> 

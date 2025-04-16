@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { StorageService } from '../../services/storage.service';
+import { IndexedDBService } from '../../services/indexed-db.service';
+import { CameraService } from '../../services/camera.service';
+import { NotificationService } from '../../services/notification.service';
 import { FreezerItem } from '../../models/freezer-item.model';
 import { addIcons } from 'ionicons';
-import { checkmarkOutline, cameraOutline } from 'ionicons/icons';
+import { checkmarkOutline, cameraOutline, imagesOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-add-item',
@@ -20,51 +21,101 @@ export class AddItemPage implements OnInit {
   item: FreezerItem = {
     id: this.generateId(),
     description: '',
-    photoUrl: '',
+    photoData: '',
     storageDate: new Date().toISOString(),
     expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // Default 30 days
+    defrostTime: {
+      value: 24,
+      unit: 'hours'
+    },
+    reminderSettings: {
+      defrostEnabled: false,
+      expiryEnabled: false
+    },
     plannedConsumptionDate: undefined,
-    defrostTime: '',
-    reminderEnabled: false
+    isPlannedForConsumption: false,
+    isExpiringSoon: false,
+    daysUntilExpiry: 30
   };
 
   constructor(
-    private storageService: StorageService,
+    private indexedDBService: IndexedDBService,
+    private cameraService: CameraService,
+    private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute
   ) {
     addIcons({
       'checkmark-outline': checkmarkOutline,
-      'camera-outline': cameraOutline
+      'camera-outline': cameraOutline,
+      'images-outline': imagesOutline
     });
   }
 
   async ngOnInit() {
     const itemId = this.route.snapshot.paramMap.get('id');
     if (itemId) {
-      const items = await this.storageService.getItems();
+      const items = await this.indexedDBService.getItems();
       const existingItem = items.find(item => item.id === itemId);
       if (existingItem) {
-        this.item = { ...existingItem };
+        // Ensure defrostTime is initialized when editing
+        this.item = {
+          ...existingItem,
+          defrostTime: existingItem.defrostTime || {
+            value: 24,
+            unit: 'hours'
+          }
+        };
       }
     }
   }
 
-  async takePhoto() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.Uri,
-      source: CameraSource.Camera
-    });
+  updateDefrostTimeValue(value: number) {
+    if (!this.item.defrostTime) {
+      this.item.defrostTime = {
+        value: value,
+        unit: 'hours' // Default unit
+      };
+    } else {
+      this.item.defrostTime.value = value;
+    }
+  }
 
-    if (image.webPath) {
-      this.item.photoUrl = image.webPath;
+  updateDefrostTimeUnit(unit: 'minutes' | 'hours' | 'days') {
+    if (!this.item.defrostTime) {
+      this.item.defrostTime = {
+        value: 24, // Default value
+        unit: unit
+      };
+    } else {
+      this.item.defrostTime.unit = unit;
+    }
+  }
+
+  async takePhoto() {
+    try {
+      this.item.photoData = await this.cameraService.takePhoto();
+    } catch (error) {
+      console.error('Error taking photo:', error);
+    }
+  }
+
+  async selectPhoto() {
+    try {
+      this.item.photoData = await this.cameraService.selectPhoto();
+    } catch (error) {
+      console.error('Error selecting photo:', error);
     }
   }
 
   async saveItem() {
-    await this.storageService.saveItem(this.item);
+    await this.indexedDBService.saveItem(this.item);
+    
+    // Handle notification scheduling
+    if (this.item.reminderSettings.defrostEnabled && this.item.reminderSettings.expiryEnabled) {
+      await this.notificationService.updateReminders(this.item);
+    }
+    
     this.router.navigate(['/inventory']);
   }
 

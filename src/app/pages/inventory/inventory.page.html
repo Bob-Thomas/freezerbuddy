@@ -36,16 +36,18 @@
   <!-- Item list -->
   <div class="item-list">
     <ion-list>
-      <ion-item lines="none" class="fade-in" *ngFor="let item of items">
+      <ion-item lines="none" class="fade-in" *ngFor="let item of items" [routerLink]="['/item-details', item.id]">
         <ion-thumbnail slot="start">
-          <img [src]="item.image || 'assets/placeholder.png'" [alt]="item.name">
+          <img [src]="item.photoData" [alt]="item.description" *ngIf="item.photoData">
+          <div class="placeholder" *ngIf="!item.photoData">
+            <ion-icon name="image-outline"></ion-icon>
+          </div>
         </ion-thumbnail>
         <ion-label>
-          <h2>{{ item.name }}</h2>
-          <p class="date-info">Added {{ item.addedDate | timeAgo }}</p>
+          <p class="description">{{ item.description }}</p>
+          <p class="date-info">Added {{ item.storageDate | timeAgo }}</p>
         </ion-label>
         <div slot="end" class="item-meta">
-          <span class="quantity">{{ item.quantity }}{{ item.unit }}</span>
           <span class="expiry" *ngIf="item.isExpiringSoon">
             <ion-badge [color]="item.daysUntilExpiry && item.daysUntilExpiry <= 3 ? 'danger' : 'warning'">
               {{ item.daysUntilExpiry }} days left
@@ -58,7 +60,7 @@
 </ion-content>
 
 <!-- FAB Button -->
-<ion-fab vertical="bottom" horizontal="end">
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button (click)="onAddItem()">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>

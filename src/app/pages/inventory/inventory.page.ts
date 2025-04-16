@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
-import { FreezerItem } from '../../models/freezer-item';
+import { FreezerItem } from '../../models/freezer-item.model';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { add } from 'ionicons/icons';
+import { add, optionsOutline } from 'ionicons/icons';
+import { IndexedDBService } from '../../services/indexed-db.service';
 
 type SortOption = 'expiry' | 'added' | 'name';
 
@@ -19,42 +21,45 @@ type SortOption = 'expiry' | 'added' | 'name';
     CommonModule,
     IonicModule,
     FormsModule,
+    RouterModule,
     TimeAgoPipe,
   ]
 })
 export class InventoryPage {
-  items: FreezerItem[] = [
-    {
-      id: '1',
-      name: 'Frozen Pizza',
-      image: 'assets/placeholder.png',
-      quantity: 2,
-      unit: 'pc',
-      addedDate: new Date('2024-03-15'),
-      expiryDate: new Date('2024-06-20'),
-      location: 'freezer',
-      isExpiringSoon: false,
-      daysUntilExpiry: 90
-    },
-    {
-      id: '2',
-      name: 'Ice Cream',
-      image: 'assets/placeholder.png',
-      quantity: 1,
-      unit: 'pint',
-      addedDate: new Date('2024-03-10'),
-      expiryDate: new Date('2024-03-25'),
-      location: 'freezer',
-      isExpiringSoon: true,
-      daysUntilExpiry: 2
-    }
-  ];
-
+  items: FreezerItem[] = [];
   currentSort: SortOption = 'expiry';
 
-  constructor(private router: Router) {
-    this.sortItems('expiry');
-    addIcons({ add });
+  constructor(
+    private router: Router,
+    private indexedDBService: IndexedDBService
+  ) {
+    addIcons({ add, optionsOutline });
+  }
+
+  ionViewWillEnter() {
+    this.loadItems();
+  }
+
+  private async loadItems() {
+    try {
+      this.items = await this.indexedDBService.getItems();
+      this.updateItemStatuses();
+      this.sortItems(this.currentSort);
+    } catch (error) {
+      console.error('Error loading items:', error);
+    }
+  }
+
+  private updateItemStatuses() {
+    const today = new Date();
+    this.items.forEach(item => {
+      const expiryDate = new Date(item.expiryDate);
+      const diffTime = expiryDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      item.daysUntilExpiry = diffDays;
+      item.isExpiringSoon = diffDays <= 7;
+    });
   }
 
   onSearch(event: any) {
@@ -73,11 +78,11 @@ export class InventoryPage {
     this.items.sort((a, b) => {
       switch (sortBy) {
         case 'expiry':
-          return (a.daysUntilExpiry ?? Infinity) - (b.daysUntilExpiry ?? Infinity);
+          return new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime();
         case 'added':
-          return new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime();
+          return new Date(b.storageDate).getTime() - new Date(a.storageDate).getTime();
         case 'name':
-          return a.name.localeCompare(b.name);
+          return a.description.localeCompare(b.description);
         default:
           return 0;
       }
@@ -90,8 +95,6 @@ export class InventoryPage {
   }
 
   onAddItem() {
-    // Implement add item functionality
-    console.log('Add item clicked');
     this.router.navigate(['/add-item']);
   }
 } 

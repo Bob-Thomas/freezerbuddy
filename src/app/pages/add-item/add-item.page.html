@@ -15,11 +15,21 @@
 <ion-content class="ion-padding">
   <form (ngSubmit)="saveItem()">
     <div class="photo-section">
-      <div class="photo-container" (click)="takePhoto()">
-        <img [src]="item.photoUrl" *ngIf="item.photoUrl" alt="Item photo">
-        <div class="photo-placeholder" *ngIf="!item.photoUrl">
+      <div class="photo-container" *ngIf="!item.photoData" (click)="takePhoto()">
+        <div class="photo-placeholder">
           <ion-icon name="camera-outline"></ion-icon>
           <span>Add Photo</span>
+        </div>
+      </div>
+      <div class="photo-preview" *ngIf="item.photoData">
+        <img [src]="item.photoData" alt="Item photo">
+        <div class="photo-actions">
+          <ion-button fill="clear" (click)="takePhoto()">
+            <ion-icon slot="icon-only" name="camera-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="selectPhoto()">
+            <ion-icon slot="icon-only" name="images-outline"></ion-icon>
+          </ion-button>
         </div>
       </div>
     </div>
@@ -65,30 +75,66 @@
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Defrost Time</ion-label>
-          <ion-input [(ngModel)]="item.defrostTime" 
-                     name="defrostTime" 
-                     placeholder="e.g., 4 hours countertop"></ion-input>
+          <ion-label>Plan to Consume</ion-label>
+          <ion-toggle [(ngModel)]="item.isPlannedForConsumption" name="isPlannedForConsumption"></ion-toggle>
         </ion-item>
 
-        <ion-item lines="none">
-          <ion-label position="stacked">Planned Consumption</ion-label>
-          <ion-datetime-button datetime="plannedDate"></ion-datetime-button>
-          <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-              <ion-datetime 
-                id="plannedDate"
-                [(ngModel)]="item.plannedConsumptionDate" 
-                name="plannedConsumptionDate"
-                presentation="date"></ion-datetime>
-            </ng-template>
-          </ion-modal>
-        </ion-item>
+        <div *ngIf="item.isPlannedForConsumption">
+          <ion-item lines="none">
+            <ion-label position="stacked">Planned Consumption Date</ion-label>
+            <ion-datetime-button datetime="plannedDate"></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime 
+                  id="plannedDate"
+                  [(ngModel)]="item.plannedConsumptionDate" 
+                  name="plannedConsumptionDate"
+                  presentation="date"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
 
-        <ion-item lines="none" *ngIf="item.plannedConsumptionDate">
-          <ion-label>Reminder</ion-label>
-          <ion-toggle [(ngModel)]="item.reminderEnabled" name="reminderEnabled"></ion-toggle>
-        </ion-item>
+          <ion-item lines="none">
+            <ion-label position="stacked">Defrost Time</ion-label>
+            <div class="defrost-time-input">
+              <ion-input 
+                type="number" 
+                [ngModel]="item.defrostTime?.value" 
+                (ngModelChange)="updateDefrostTimeValue($event)"
+                name="defrostTimeValue"
+                min="1"
+                placeholder="Enter time"></ion-input>
+              <ion-select 
+                [ngModel]="item.defrostTime?.unit" 
+                (ngModelChange)="updateDefrostTimeUnit($event)"
+                name="defrostTimeUnit"
+                interface="popover">
+                <ion-select-option value="minutes">Minutes</ion-select-option>
+                <ion-select-option value="hours">Hours</ion-select-option>
+                <ion-select-option value="days">Days</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-item>
+        </div>
+
+        <!-- Reminder Settings -->
+        <ion-item-group>
+          <ion-item lines="none">
+            <ion-label>
+              <h2>Expiry Reminder</h2>
+              <p>Get notified before item expires</p>
+            </ion-label>
+            <ion-toggle [(ngModel)]="item.reminderSettings.expiryEnabled" name="expiryEnabled"></ion-toggle>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="item.isPlannedForConsumption">
+            <ion-label>
+              <h2>Defrost Reminder</h2>
+              <p>Get notified when it's time to defrost</p>
+            </ion-label>
+            <ion-toggle [(ngModel)]="item.reminderSettings.defrostEnabled" name="defrostEnabled"></ion-toggle>
+          </ion-item>
+        </ion-item-group>
       </ion-list>
     </div>
   </form>
