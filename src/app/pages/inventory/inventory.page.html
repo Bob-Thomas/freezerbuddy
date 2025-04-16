@@ -1,0 +1,85 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Freezer Buddy</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Search bar -->
+  <ion-searchbar 
+    placeholder="Search freezer items" 
+    class="custom-searchbar" 
+    animated="true"
+    (ionInput)="onSearch($event)">
+  </ion-searchbar>
+
+  <!-- Sort options -->
+  <div class="sort-filter">
+    <ion-segment value="expiry" mode="md" (ionChange)="onSortChange($event)">
+      <ion-segment-button value="expiry">
+        <ion-label>EXPIRY</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="added">
+        <ion-label>ADDED</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="name">
+        <ion-label>NAME</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- Item list -->
+  <div class="item-list">
+    <ion-list>
+      <ion-item lines="none" class="fade-in" *ngFor="let item of items">
+        <ion-thumbnail slot="start">
+          <img [src]="item.image || 'assets/placeholder.png'" [alt]="item.name">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ item.name }}</h2>
+          <p class="date-info">Added {{ item.addedDate | timeAgo }}</p>
+        </ion-label>
+        <div slot="end" class="item-meta">
+          <span class="quantity">{{ item.quantity }}{{ item.unit }}</span>
+          <span class="expiry" *ngIf="item.isExpiringSoon">
+            <ion-badge [color]="item.daysUntilExpiry && item.daysUntilExpiry <= 3 ? 'danger' : 'warning'">
+              {{ item.daysUntilExpiry }} days left
+            </ion-badge>
+          </span>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<!-- FAB Button -->
+<ion-fab vertical="bottom" horizontal="end">
+  <ion-fab-button (click)="onAddItem()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<!-- Bottom tabs -->
+<!-- <ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="scan">
+      <ion-icon name="scan-outline"></ion-icon>
+      <ion-label>Scan</ion-label>
+    </ion-tab-button>
+    
+    <ion-tab-button tab="freezer" selected>
+      <ion-icon name="snow-outline"></ion-icon>
+      <ion-label>Freezer</ion-label>
+    </ion-tab-button>
+    
+    <ion-tab-button tab="stats">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+      <ion-label>Stats</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>  -->

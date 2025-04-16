@@ -1,0 +1,275 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+
+/* You can add global styles to this file, and also import other style files */
+@import './theme/variables.scss';
+
+// App container
+.app-container {
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
+// Content area
+ion-content {
+  --background: var(--ion-background-color);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+}
+
+// Toolbar styling
+ion-toolbar {
+  --min-height: 60px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+  }
+
+  ion-button {
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+}
+
+// Card styling
+ion-card {
+  margin: 16px 0;
+  border-radius: var(--card-border-radius);
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  
+  &:first-child {
+    margin-top: 24px;
+  }
+  
+  ion-card-header {
+    padding: 20px;
+    
+    ion-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin-bottom: 8px;
+    }
+    
+    ion-card-subtitle {
+      font-size: 0.95rem;
+      color: var(--ion-color-medium);
+      font-weight: 500;
+    }
+  }
+  
+  ion-card-content {
+    padding: 0 20px 20px;
+  }
+}
+
+// List items
+ion-item {
+  --background: transparent;
+  --border-radius: var(--item-border-radius);
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --min-height: 60px;
+  margin: 8px 0;
+  
+  &.item-lines-none {
+    --border-width: 0;
+  }
+
+  ion-label {
+    margin: 8px 0;
+    
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ion-text-color);
+      margin-bottom: 4px;
+    }
+    
+    p {
+      font-size: 0.9rem;
+      color: var(--ion-color-medium);
+      margin: 4px 0;
+    }
+  }
+}
+
+// Search bar
+ion-searchbar {
+  --background: white;
+  --box-shadow: none;
+  --border-radius: 16px;
+  padding: 0;
+  margin: 16px 0;
+  
+  .searchbar-input {
+    background: white;
+    border-radius: 16px;
+    font-size: 1rem;
+    padding: 12px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+}
+
+// Segment controls
+ion-segment {
+  background: white;
+  border-radius: 16px;
+  margin: 16px 0;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+ion-segment-button {
+  --background: transparent;
+  --background-checked: var(--ion-color-primary);
+  --indicator-color: transparent;
+  --color: var(--ion-color-medium);
+  --color-checked: white;
+  --border-radius: 12px;
+  min-height: 40px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: none;
+  
+  &::part(indicator) {
+    display: none;
+  }
+}
+
+// FAB button
+ion-fab-button {
+  --background: var(--ion-color-primary);
+  --background-activated: var(--ion-color-primary-shade);
+  --background-hover: var(--ion-color-primary-tint);
+  --box-shadow: 0 4px 16px rgba(var(--ion-color-primary-rgb), 0.4);
+  margin: 16px;
+}
+
+// Category badges
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 4px;
+  
+  ion-icon {
+    margin-right: 6px;
+    font-size: 1.1rem;
+  }
+  
+  &.primary {
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    color: var(--ion-color-primary);
+  }
+  
+  &.secondary {
+    background: rgba(var(--ion-color-secondary-rgb), 0.1);
+    color: var(--ion-color-secondary);
+  }
+}
+
+// Status indicators
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  
+  &.warning {
+    background: rgba(var(--ion-color-warning-rgb), 0.1);
+    color: var(--ion-color-warning-shade);
+  }
+  
+  &.danger {
+    background: rgba(var(--ion-color-danger-rgb), 0.1);
+    color: var(--ion-color-danger-shade);
+  }
+  
+  &.success {
+    background: rgba(var(--ion-color-success-rgb), 0.1);
+    color: var(--ion-color-success-shade);
+  }
+  
+  ion-icon {
+    margin-right: 4px;
+  }
+}
+
+// Custom animations
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

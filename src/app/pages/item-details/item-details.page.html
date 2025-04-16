@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inventory"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Item Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/add-item', item?.id]">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="item">
+  <ion-card>
+    <img [src]="item.photoUrl" alt="Item photo">
+    <ion-card-header>
+      <ion-card-title>{{ item.description }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Storage Date</ion-label>
+          <ion-text>{{ item.storageDate | date }}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Expiry Date</ion-label>
+          <ion-text>{{ item.expiryDate | date }}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Days Remaining</ion-label>
+          <ion-text [color]="getDaysRemaining() < 7 ? 'danger' : 'success'">
+            {{ getDaysRemaining() }} days
+          </ion-text>
+        </ion-item>
+
+        <ion-item *ngIf="item.defrostTime">
+          <ion-label>Defrost Time</ion-label>
+          <ion-text>{{ item.defrostTime }}</ion-text>
+        </ion-item>
+
+        <ion-item *ngIf="item.plannedConsumptionDate">
+          <ion-label>Planned Consumption</ion-label>
+          <ion-text>{{ item.plannedConsumptionDate | date }}</ion-text>
+        </ion-item>
+
+        <ion-item *ngIf="getDaysUntilPlanned() !== null">
+          <ion-label>Days Until Planned</ion-label>
+          <ion-text [color]="getDaysUntilPlanned()! < 3 ? 'warning' : 'success'">
+            {{ getDaysUntilPlanned() }} days
+          </ion-text>
+        </ion-item>
+
+        <ion-item *ngIf="item.reminderEnabled">
+          <ion-label>Reminder Set</ion-label>
+          <ion-icon name="notifications" color="primary"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" (click)="removeItem()">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> 

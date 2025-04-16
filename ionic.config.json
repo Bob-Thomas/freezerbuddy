@@ -1,0 +1,7 @@
+{
+  "name": "freezerbuddy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

@@ -1,0 +1,25 @@
+ion-card {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+ion-item {
+  --background: white;
+  margin: 8px;
+  border-radius: 8px;
+  --padding-start: 8px;
+  --inner-padding-end: 8px;
+}
+
+ion-fab-button {
+  --background: var(--ion-color-danger);
+  --background-activated: var(--ion-color-danger-shade);
+  --background-hover: var(--ion-color-danger-tint);
+} 
