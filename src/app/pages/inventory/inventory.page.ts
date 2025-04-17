@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
@@ -9,6 +8,25 @@ import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { add, imageOutline, optionsOutline } from 'ionicons/icons';
 import { IndexedDBService } from '../../services/indexed-db.service';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonSearchbar,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonList,
+  IonItem,
+  IonThumbnail,
+  IonBadge,
+  IonFab,
+  IonFabButton
+} from '@ionic/angular/standalone';
 
 type SortOption = 'expiry' | 'added' | 'name';
 
@@ -19,10 +37,26 @@ type SortOption = 'expiry' | 'added' | 'name';
   standalone: true,
   imports: [
     CommonModule,
-    IonicModule,
     FormsModule,
     RouterModule,
     TimeAgoPipe,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonSearchbar,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonList,
+    IonItem,
+    IonThumbnail,
+    IonBadge,
+    IonFab,
+    IonFabButton
   ]
 })
 export class InventoryPage {

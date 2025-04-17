@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IndexedDBService } from '../../services/indexed-db.service';
@@ -11,13 +10,75 @@ import { CalendarModalComponent } from '../../components/calendar-modal/calendar
 import { FreezerItem } from '../../models/freezer-item.model';
 import { addIcons } from 'ionicons';
 import { checkmarkOutline, cameraOutline, imagesOutline, calendarOutline } from 'ionicons/icons';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonTitle,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonDatetimeButton,
+  IonModal,
+  IonDatetime,
+  IonToggle,
+  IonItemGroup,
+  IonSelect,
+  IonSelectOption,
+  ModalController,
+  IonPopover,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText,
+  IonNote,
+  IonFab,
+  IonFabButton,
+  IonFabList
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-add-item',
   templateUrl: './add-item.page.html',
   styleUrls: ['./add-item.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonDatetimeButton,
+    IonModal,
+    IonDatetime,
+    IonToggle,
+    IonItemGroup,
+    IonSelect,
+    IonSelectOption,
+    IonPopover,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonText,
+    IonNote,
+    IonFab,
+    IonFabButton,
+    IonFabList
+  ]
 })
 export class AddItemPage implements OnInit {
   item: FreezerItem = {

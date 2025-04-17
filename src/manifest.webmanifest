@@ -1,4 +1,11 @@
 {
+  "name": "Freezer Buddy",
+  "short_name": "Freezer Buddy",
+  "theme_color": "#3D8AFF",
+  "background_color": "#3D8AFF",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
   "icons": [
     {
       "src": "assets/icons/icon-48.webp",
